@@ -1,0 +1,120 @@
+@font-face {
+    font-family: "digital7";
+    src: url(./Digital7Mono-Yz9J4.ttf);
+}
+
+
+
+html{
+    font-size: 20px;
+}
+
+:root{
+    --gray-1: #C0C0C0;
+    --gray-2: #A9A9A9;
+    --gray-3: #696969;
+    --light-black: rgb(34, 32, 32);
+}
+
+
+
+@keyframes gradient_anims {
+    0%{background: linear-gradient(to bottom right, blue,blueviolet, purple);}
+    25%{background: linear-gradient(to bottom right,blueviolet, purple);}
+    50%{background:purple; font-size: 125%;}
+    62.5%{background: linear-gradient(to bottom right, purple,blueviolet, blue);}
+    75%{background: linear-gradient(to bottom right,blueviolet, blue);}
+    87.5%{background: blue;}
+    100%{background: blue;}
+}
+@keyframes button-pressed{
+    0%{background: white;}
+    100%{background: white;}
+}
+
+body{
+    background:linear-gradient(to bottom right, black,grey,white);
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+}
+
+#main_body{
+    background-color: black;
+    width: 450px;
+    height: 600px;
+    margin-top: 3rem;
+    border-radius: 2rem;
+    padding: 1rem 1rem;
+    padding-top: 1rem;
+}
+
+
+#calculator_screen{
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    width: fill;
+    padding: 1rem 1rem;
+    background-color: gray;
+    border: 3px solid purple;
+    margin:1rem .5rem 0 .5rem;
+    border-radius: 1rem;
+}
+#previous_input{
+    color: var(--gray-1);
+    font-size: 1rem;
+    font-family:'digital7';
+}
+#output_and_input{
+    margin-top: auto;
+    font-size: 1.8rem;
+    color:white;
+    font-family: 'digital7' ;
+}
+
+#brand-name{
+    margin-left: 1.5rem;
+    color: white;
+}
+
+#keypad{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: 1.5rem 1rem;
+    padding: 2rem 1rem 2rem 1rem;
+}
+
+button{
+    font-family:'digital7';
+    background-color: var(--gray-3);
+    font-size: 1.5rem;
+    font-weight:900;
+    border: none;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+}
+
+.operation{
+    background-color:purple;
+}
+
+.text-ed{
+    background: blue;
+    color: var(--gray-2);
+}
+
+.special{
+    background: var(--gray-1);
+}
+button:hover{
+    animation: gradient_anims 1s infinite;
+}
+
+button:active{
+    animation: button-pressed 1s infinite;
+}
+#calculator_screen.off{
+    background-color: var(--light-black);
+}
+

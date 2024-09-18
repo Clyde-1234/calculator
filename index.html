@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="main_body">
+        <div id="brand-name">CASHEW</div>
+        <div id="calculator_screen">
+            <span id="previous_input">this is previous input</span>
+            <span id="output_and_input">this is input</span>
+        </div>
+        <div id="keypad">
+            <button class="special" onclick="off()">BYE</button>
+            <div></div>
+            <div></div>
+            <div></div>
+            <button class="special" onclick="HI()">HI!</button>
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button class=" text-ed" onclick="ac()">AC</button>
+            <button class=" text-ed" onclick="del()">DEL</button>
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button class="operation" onclick="press('x')">X</button>
+            <button class="operation" onclick="press('÷')">÷</button>
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button class="operation" onclick="press('+')" style="height: 265%;">+</button>
+            <button class="operation" onclick="press('-')">-</button>
+            <button onclick="press('0')">0</button>
+            <div></div>
+            <button onclick="press('.')">.</button>
+            <div></div>
+            <button class="operation" onclick="get_answer()">=</button>
+            
+        </div>
+    </div>
+    <div style="position: absolute; color: white;">Font-family used: digital 7 by Sizenko Alexander</div>
+
+
+    
+    <script src="main.js"></script>
+</body>
+</html>
