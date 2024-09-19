@@ -150,6 +150,7 @@ function update_current_input(){
         stringified_problem += operation_used.charAt(i);
     }
     stringified_problem += number_block_under_edit;
+    if(stringified_problem.length >= 20){all_clear()}
     unprocessed_stringified_problem = stringified_problem;
     current_input.innerHTML = stringified_problem;
 }
