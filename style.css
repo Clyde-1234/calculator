@@ -3,21 +3,6 @@
     src: url(./Digital7Mono-Yz9J4.ttf);
 }
 
-
-
-html{
-    font-size: 20px;
-}
-
-:root{
-    --gray-1: #C0C0C0;
-    --gray-2: #A9A9A9;
-    --gray-3: #696969;
-    --light-black: rgb(34, 32, 32);
-}
-
-
-
 @keyframes gradient_anims {
     0%{background: linear-gradient(to bottom right, blue,blueviolet, purple);}
     25%{background: linear-gradient(to bottom right,blueviolet, purple);}
@@ -31,6 +16,19 @@ html{
     0%{background: white;}
     100%{background: white;}
 }
+
+html{
+    font-size: 20px;
+}
+
+:root{
+    --gray-1: #C0C0C0;
+    --gray-2: #A9A9A9;
+    --gray-3: #696969;
+    --light-black: rgb(34, 32, 32);
+}
+
+
 
 body{
     background:linear-gradient(to bottom right, black,grey,white);

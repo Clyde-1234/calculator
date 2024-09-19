@@ -10,36 +10,36 @@
     
     <div id="main_body">
         <div id="brand-name">CASHEW</div>
-        <div id="calculator_screen">
-            <span id="previous_input">this is previous input</span>
-            <span id="output_and_input">this is input</span>
+        <div id="calculator_screen" class="">
+            <span id="previous_input"></span>
+            <span id="output_and_input"></span>
         </div>
         <div id="keypad">
-            <button class="special" onclick="off()">BYE</button>
+            <button class="special" onclick="bye_pressed()">BYE</button>
             <div></div>
             <div></div>
             <div></div>
             <button class="special" onclick="HI()">HI!</button>
-            <button onclick="press('7')">7</button>
-            <button onclick="press('8')">8</button>
-            <button onclick="press('9')">9</button>
-            <button class=" text-ed" onclick="ac()">AC</button>
-            <button class=" text-ed" onclick="del()">DEL</button>
-            <button onclick="press('4')">4</button>
-            <button onclick="press('5')">5</button>
-            <button onclick="press('6')">6</button>
-            <button class="operation" onclick="press('x')">X</button>
-            <button class="operation" onclick="press('÷')">÷</button>
-            <button onclick="press('1')">1</button>
-            <button onclick="press('2')">2</button>
-            <button onclick="press('3')">3</button>
-            <button class="operation" onclick="press('+')" style="height: 265%;">+</button>
-            <button class="operation" onclick="press('-')">-</button>
-            <button onclick="press('0')">0</button>
+            <button onclick="number_pressed('7')">7</button>
+            <button onclick="number_pressed('8')">8</button>
+            <button onclick="number_pressed('9')">9</button>
+            <button class=" text-ed" onclick="all_clear()">AC</button>
+            <button class=" text-ed" onclick="delete_key()">DEL</button>
+            <button onclick="number_pressed('4')">4</button>
+            <button onclick="number_pressed('5')">5</button>
+            <button onclick="number_pressed('6')">6</button>
+            <button class="operation" onclick="operation_pressed('x')">X</button>
+            <button class="operation" onclick="operation_pressed('÷')">÷</button>
+            <button onclick="number_pressed('1')">1</button>
+            <button onclick="number_pressed('2')">2</button>
+            <button onclick="number_pressed('3')">3</button>
+            <button class="operation" onclick="operation_pressed('+')" style="height: 265%;">+</button>
+            <button class="operation" onclick="operation_pressed('-')">-</button>
+            <button onclick="number_pressed('0')">0</button>
             <div></div>
-            <button onclick="press('.')">.</button>
+            <button onclick="add_decimal('.')">.</button>
             <div></div>
-            <button class="operation" onclick="get_answer()">=</button>
+            <button class="operation" onclick="equals()">=</button>
             
         </div>
     </div>

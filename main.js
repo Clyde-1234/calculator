@@ -2,142 +2,172 @@ const previous_input = document.getElementById("previous_input");
 const current_input = document.getElementById("output_and_input");
 const calc_screen = document.getElementById("calculator_screen");
 
+/*main premise as to how the numbers are constructed:
+numbers are made by block;
+when a new operation is in, the current block is moved to a list
+when the equal is pressed, it is calculated by compiling the list and operation to a single line and solve using eval()
+*/
+const operations = ["+","-","x","÷"]; 
 
-var stringed_problem_display = "";
-var interpretable_stringed_problem= "";
+var is_on = true;
+var is_current_input_an_operation = false;
+var is_decimal = false;
+var just_answered = false;
 
-var previous_answer;
-var is_answer_pressed= false;
-var is_on= true;
-var greet= false;
+var operation_used = "";
+var number_block_list = [];
+var number_block_under_edit = "";
 
-const operations = ["+","-","x","÷"]
+var unprocessed_stringified_problem = "";
 
-function press(button){
-    toString(button);
-    if(stringed_problem_display.length >= 20){return} //sets the input limit.
-    if (!is_on){ return}//checks if the calculator is on
-    //handle case if when user pressess buttons while on answer mode
-    if(is_answer_pressed){
-        interpretable_stringed_problem = "";
-        stringed_problem_display = "";
-        if(operations.includes(button)){
-            interpretable_stringed_problem += previous_answer
-            stringed_problem_display += previous_answer
-        }
-        current_input.innerHTML = stringed_problem_display;
-        is_answer_pressed = false
+function number_pressed(number){
+    if(!is_on){return}
+    if(just_answered){
+        number_block_under_edit = "";
+        just_answered = false;
     }
-    //handle case when an operation button is pressed after an operation input
-    if(operations.includes(button)){
-        if(operations.includes(stringed_problem_display.slice(-1))||stringed_problem_display.length === 0){
-            return
-        }
-    }
-    //interprets multiplication ui to operational 
-    if(button === 'x'){
-        stringed_problem_display += button
-        interpretable_stringed_problem += "*"
-    }
-    //interprets division ui to operational
-    else if(button === "÷"){
-        stringed_problem_display += button
-        interpretable_stringed_problem += "/"
-    }
-    //concatenate input to the stack
-   else{
-        stringed_problem_display += button
-        interpretable_stringed_problem += button
-    }
-    //display stringed_proble_display
-    current_input.innerHTML = stringed_problem_display
-
-
-
-    
-}
-//delete most recent input
-function del(){
-    if (greet){return}//ignores the function when greet is true
-    if(is_answer_pressed){
-        stringed_problem_display= previous_answer
-        is_answer_pressed = false
-    }
-    stringed_problem_display = stringed_problem_display.slice(0,-1)
-    interpretable_stringed_problem = interpretable_stringed_problem.slice(0,-1)
-    current_input.innerHTML = stringed_problem_display
-}
-//process input to get answer
-function get_answer(){
-    if (!is_on){ return}//ignore function when the program is off
-    if(stringed_problem_display === ""){return}//ignore function when there is no input
-    if(operations.includes(stringed_problem_display.slice(-1))){return}//ignore function when the most recent input is an operation
-    previous_input.innerHTML = current_input.innerHTML
-    stringed_problem_display = eval(interpretable_stringed_problem)
-    current_input.innerHTML = stringed_problem_display
-    previous_answer = current_input.innerHTML
-    
-    
-    is_answer_pressed = true
-}
-//turn off the program
-function off(){
-    if (is_on){
-        is_on = false;
-        current_input.innerHTML = "Goodbye =("
-        setTimeout(function() {
-            calc_screen.classList.toggle("off");
-            stringed_problem_display = ""
-            interpretable_stringed_problem = ""
-            current_input.innerHTML = ""
-            previous_input.innerHTML = "https://tinyurl.com/2m4mjd8y"
-        }, 1000)
-    }
+    number_block_under_edit += number;
+    is_current_input_an_operation = false;
+    update_current_input();
 }
 
-function ac(){
-    //if the program is off, it turns it on
+function add_decimal(){
+    if(!is_on){return}
+
+    if(just_answered){
+        number_block_under_edit = "";
+        just_answered = false;
+    }
+    if(is_decimal){return}
+    number_block_under_edit += ".";
+    is_current_input_an_operation = false;
+    is_decimal = true;
+    update_current_input();
+}
+
+function operation_pressed(op){
+    if(!is_on){return}
+    if(is_current_input_an_operation){return} //prevents the user from making multiple operations simultaneously
+
+    if(number_block_under_edit === "" && number_block_list.length === 0){
+        if(op === "-"){number_block_under_edit += "-"}}
+        
+    else{
+        is_decimal = false;
+        number_block_list.push(number_block_under_edit);
+        number_block_under_edit = "";
+        operation_used += op;
+    }
+
+    is_current_input_an_operation = true;
+    update_current_input();
+
+}
+
+
+
+function equals(){
+    if(!is_on){return}
+
+    if(number_block_under_edit.length === 0 && number_block_under_edit === ""){return} //handle case if the equals sign is pressed when no inputs are given.
+    previous_input.innerHTML = unprocessed_stringified_problem;
+    var processed_stringified_problem = "";
+
+    //compile the list of number block to form a single line with the corresponding operation
+    for(i = 0; i < unprocessed_stringified_problem.length; i++){
+        if(unprocessed_stringified_problem.charAt(i) === "x"){processed_stringified_problem+="*"}
+        else if(unprocessed_stringified_problem.charAt(i) === "÷"){processed_stringified_problem+="/"}
+        else{processed_stringified_problem += unprocessed_stringified_problem.charAt(i)}
+    }
+
+    var answer = eval(processed_stringified_problem);
+    operation_used = "";
+    unprocessed_stringified_problem = "";
+    number_block_list = [];
+    is_decimal = false;
+    number_block_under_edit = answer + "";
+    just_answered = true;
+    update_current_input();
+    if(isNaN(answer) || answer === Infinity){number_block_under_edit = ""}  
+}
+
+
+
+function delete_key(){
+    if(number_block_under_edit ===""){
+        if(!(operation_used.length > 0)){return}
+        operation_used = operation_used.slice(0,-1);
+        is_current_input_an_operation = false;
+        if(number_block_list.length > 0){number_block_under_edit = number_block_list.pop()}}
+
+    else if(number_block_under_edit.charAt(number_block_under_edit.length - 1) === "."){
+        number_block_under_edit = number_block_under_edit.slice(0,-1);
+        is_decimal = false}
+
+    else if(!isNaN(number_block_under_edit)){number_block_under_edit = number_block_under_edit.slice(0,-1)}
+
+    else{number_block_under_edit = ""}
+
+    update_current_input();
+}
+
+
+
+function all_clear(){
     if(!is_on){
-        calc_screen.classList.toggle("off");
-        is_on =true
+        calc_screen.className = "";
+        is_on = true;
     }
-    //clear all input
-    if(is_on){
-        stringed_problem_display =""
-        interpretable_stringed_problem =""
-        current_input.innerHTML = stringed_problem_display
-        previous_input.innerHTML = interpretable_stringed_problem
-    }
+    is_current_input_an_operation = false;
+    is_decimal = false;
+    number_block_list = [];
+    number_block_under_edit = "";
+    unprocessed_stringified_problem = "";
+    operation_used = "";
+    previous_input.innerHTML = "";
+    update_current_input();
 }
+
+
+
+function bye_pressed(){
+    is_on = false;
+    current_input.innerHTML = "GOOODBYE =(";
+    setTimeout(() =>{
+        all_clear();
+        is_on = false;
+        calc_screen.className= "off";
+        current_input.innerHTML = "";
+        previous_input.innerHTML = "https://tinyurl.com/2m4mjd8y"}, 2000)
+}
+
+
+//updates ui based on the current program state. works by compiling the block list and operations in a single line
+function update_current_input(){
+    var stringified_problem = "";
+    for(let i = 0; i < number_block_list.length; i++ ){
+        stringified_problem += number_block_list[i];
+        stringified_problem += operation_used.charAt(i);
+    }
+    stringified_problem += number_block_under_edit;
+    unprocessed_stringified_problem = stringified_problem;
+    current_input.innerHTML = stringified_problem;
+}
+
+
 
 function HI(){
     if (!is_on){ return}
-    stringed_problem_display = ""
-    interpretable_stringed_problem = ""
-    const hi = ["Hello", "Kon'nichiwa", "Nihao","Kamusta","Hola","Hej","Привет", "geia shu","ciao","marhaba"]
-    current_input.innerHTML = getRandomElement(hi)
-    greet = true
-
+    all_clear();
+    const hi = ["Hello", "Kon'nichiwa", "Nihao","Kamusta","Hola","Hej","Привет", "geia shu","ciao","marhaba"];
+    current_input.innerHTML = getRandomElement(hi);
 }
-//array randomizer
+
+
+
+//array randomizer for HI function
 function getRandomElement(list) {
     const randomIndex = Math.floor(Math.random() * list.length);
     return list[randomIndex];
-  }
-//handle keyboard input
-window.addEventListener('keydown', (e)=>{
-    var keypressed = e.key
+}
 
-    if("1234567890asdm".includes(e.key)){
-        if(keypressed === "a"){keypressed = "+"}
-        if(keypressed === "s"){keypressed = "-"}
-        if(keypressed === "m"){keypressed = "x"}
-        if(keypressed === "d"){keypressed = "÷"}
-        press(keypressed)
-    }
-    if("Enter" === keypressed){get_answer()}
-    if("Backspace" === keypressed){del()}
-    if(" " === keypressed){HI()}
-    if("Escape" === keypressed){off()}
-    if("Delete" === keypressed){ac()}
-  })
