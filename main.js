@@ -113,7 +113,7 @@ function delete_key(){
 
 
 
-function all_clear(){
+function all_clear(limit = false){
     if(!is_on){
         calc_screen.className = "";
         is_on = true;
@@ -124,7 +124,7 @@ function all_clear(){
     number_block_under_edit = "";
     unprocessed_stringified_problem = "";
     operation_used = "";
-    previous_input.innerHTML = "";
+    if(!limit){previous_input.innerHTML = ""}
     update_current_input();
 }
 
@@ -150,7 +150,7 @@ function update_current_input(){
         stringified_problem += operation_used.charAt(i);
     }
     stringified_problem += number_block_under_edit;
-    if(stringified_problem.length >= 20){all_clear()}
+    if(stringified_problem.length >= 15){all_clear(true)} //set input limit to 15
     unprocessed_stringified_problem = stringified_problem;
     current_input.innerHTML = stringified_problem;
 }
