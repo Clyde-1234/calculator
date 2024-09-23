@@ -108,6 +108,8 @@ function delete_key(){
 
     else{number_block_under_edit = ""}
 
+    if((number_block_under_edit.includes("."))){is_decimal = true} //restricts the user from inserting a decimal on a float if an operation is recently deleted
+
     update_current_input();
 }
 
