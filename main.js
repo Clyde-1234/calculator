@@ -11,6 +11,7 @@ const operations = ["+","-","x","÷"];
 
 var is_on = true;
 var is_current_input_an_operation = false;
+var consecutive_operations = 0;
 var is_decimal = false;
 var just_answered = false;
 
@@ -26,6 +27,7 @@ function number_pressed(number){
         number_block_under_edit = "";
         just_answered = false;
     }
+    consecutive_operations = 0
     number_block_under_edit += number;
     is_current_input_an_operation = false;
     update_current_input();
@@ -47,12 +49,17 @@ function add_decimal(){
 
 function operation_pressed(op){
     if(!is_on){return}
-    if(is_current_input_an_operation){return} //prevents the user from making multiple operations simultaneously
+    if(consecutive_operations == 2){return}
+    if(is_current_input_an_operation){
+        if(op != "-"){return}
+        if(operation_used.charAt(operation_used.length -1) == "-"){return}
+    } //prevents the user from making multiple operations simultaneously
 
     if(number_block_under_edit === "" && number_block_list.length === 0){
         if(op === "-"){number_block_under_edit += "-"}}
         
     else{
+        consecutive_operations += 1
         is_decimal = false;
         number_block_list.push(number_block_under_edit);
         number_block_under_edit = "";
@@ -81,6 +88,7 @@ function equals(){
     }
 
     var answer = eval(processed_stringified_problem);
+    consecutive_operations = 0
     operation_used = "";
     unprocessed_stringified_problem = "";
     number_block_list = [];
@@ -98,6 +106,7 @@ function delete_key(){
         if(!(operation_used.length > 0)){return}
         operation_used = operation_used.slice(0,-1);
         is_current_input_an_operation = false;
+        consecutive_operations -= 1
         if(number_block_list.length > 0){number_block_under_edit = number_block_list.pop()}}
 
     else if(number_block_under_edit.charAt(number_block_under_edit.length - 1) === "."){
@@ -110,7 +119,7 @@ function delete_key(){
 
     if((number_block_under_edit.includes("."))){is_decimal = true} //restricts the user from inserting a decimal on a float if an operation is recently deleted
 
-    update_current_input();
+        update_current_input();
 }
 
 
@@ -133,6 +142,7 @@ function all_clear(limit = false){
 
 
 function bye_pressed(){
+    if(!is_on){return}
     is_on = false;
     current_input.innerHTML = "GOOODBYE =(";
     setTimeout(() =>{
